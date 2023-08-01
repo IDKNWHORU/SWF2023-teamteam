@@ -64,7 +64,7 @@ if (Ethers.provider()) {
 
 const Card = styled.div`
     color: #fff;
-    width: 25%;
+    width: Calc(25% - 15px);
     height: 100%;
     border: solid 1px #bbb;
     border-radius: 12px;
@@ -209,6 +209,7 @@ const PlayListWrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
     margin-top: 40px;
+    gap: 15px;
   }
 `;
 
