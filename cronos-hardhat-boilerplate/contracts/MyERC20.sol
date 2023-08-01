@@ -24,13 +24,15 @@ contract MyERC20 is
     struct DonationInfo {
         address player;
         string playerName;
+        string playerKoreanName;
         uint256 amount;
         address donor;
     }
 
     struct PlayerInfo {
         address playerAddress;
-        string name;
+        string koreanName;
+        string englishName;
         string birthDate;
         string position;
         string team;
@@ -47,21 +49,37 @@ contract MyERC20 is
     event NewPlayerAdded(address player);
 
     constructor(string memory name, string memory symbol) ERC20(name, symbol) {
-        addPlayer("Son Heung-min", "1992-07-08", "Forward", "Tottenham Hotspur");
-        addPlayer("Kim Young-gwon", "1990-02-27", "Defender", "Gamba Osaka");
-        addPlayer("Park Ji-sung", "1981-02-25", "Midfielder", "Manchester United");
-        addPlayer("Kwon Chang-hoon", "1994-06-30", "Midfielder", "SC Freiburg");
-        addPlayer("Lee Kang-in", "2001-02-19", "Midfielder", "Valencia CF");
+        addPlayer("\uae40\uc720\uccb4", "Kim Yoochul", "2007/01/22", "\uace8\ud1b5\uacf5\ud558\uad6c", "\uc11c\uc6b8\uace0\ub4e0\ud574");
+        addPlayer("\ubc15\ud604\uc870", "Park Hyun-Jun", "2008/11/18", "\ubbf8\ub4dd\ud540", "\ud55c\uad6d\uc911\ud559\uad50");
+        addPlayer("\uc774\uac10\uc778", "Lee Gam-in", "2007/07/02", "\ubbf8\ub4dd\ud540", "\ud0dc\uadf9\uace0\ub4e0\ud574");
+        addPlayer("\uc18c\uc720\ucba85", "Son Heung-min", "2009/09/13", "\uacf5\uac1c\uc218", "\ub300\ud55c\uc911\ud559\uad50");
+        addPlayer("\ubc15\uc9c1\uc11d", "Park Ji-seok", "2008/08/07", "\ubbf8\ub4dd\ud540", "\uc11c\uc6b8\uace0\ub4e0\ud574");
+        addPlayer("\ud654\ud76c\ucc3d", "Hwang Hwue-chan", "2007/07/12", "\uacf5\uac1c\uc218", "\ud55c\uad6d\uace0\ub4e0\ud574");
+        addPlayer("\uae40\uc778\uc7ac", "Kim In-jae", "2007/04/06", "\uc218\ube44\uc218", "\uc11c\uc6b8\uace0\ub4e0\ud574");
+        addPlayer("\ud64d\uae40\uad00", "Hong Myoung-mo", "2008/03/19", "\uc218\ube44\uc218", "\ud0dc\uadf9\uace0\ub4e0\ud574");
+        addPlayer("\uc778\uc815\ud658", "In Jung-hwan", "2007/08/04", "\uacf5\uac1c\uc218", "\uc11c\uc6b8\uace0\ub4e0\ud574");
+        addPlayer("\uc774\uccad\uc218", "Lee Chung-soo", "2007/05/25", "\ubbf8\ub4dd\ud540", "\ud55c\uad6d\uace0\ub4e0\ud574");
+        addPlayer("\uc870\ud658\ubb38", "Jo Hyun-mu", "2007/06/16", "\uace8\ubd81\uc218", "\ud0dc\uadf9\uace0\ub4e0\ud574");
+        addPlayer("\uae30\uc131\uc6d0", "Ki Seon-young", "2009/10/10", "\ubbf8\ub4dd\ud540", "\ud55c\ubbfc\uc911\ud559\uad50");
+        addPlayer("\uad50\ucc28\uc9c4", "Koo Cha-Jeol", "2010/11/01", "\ubbf8\ub4dd\ud540", "\ub300\ud55c\uc911\ud559\uad50");
+        addPlayer("\uc774\ucc9c\uc6d0", "Lee Chun-young", "2009/02/12", "\ubbf8\ub4dd\ud540", "\ud55c\uad6d\uc911\ud559\uad50");
+        addPlayer("\ubc15\uc8fc\uc5f0", "Park Ju-Yeok", "2007/03/30", "\uacf5\uac1c\uc218", "\uc11c\uc6b8\uace0\ub4e0\ud574");
+        addPlayer("\uae40\uc9c4\ub450", "Kim Jin-du", "2008/04/18", "\uc218\ube44\uc218", "\ud0dc\uadf9\uace0\ub4e0\ud574");
+        addPlayer("\ud658\ubbfc\ubca0", "Hwang Min-bum", "2009/12/11", "\ubbf8\ub4dd\ud540", "\ud55c\ubbfc\uc911\ud559\uad50");
+        addPlayer("\uc870\uad6c\uc815", "Jo Kyu-jung", "2007/12/05", "\uacf5\uac1c\uc218", "\ud0dc\uadf9\uace0\ub4e0\ud574");
+        addPlayer("\uc774\uc7ac\uc120", "Lee Jae-seon", "2008/12/29", "\ubbf8\ub4dd\ud540", "\uc11c\uc6b8\uace0\ub4e0\ud574");
+        addPlayer("\uc774\uc720\uc7ac", "Lee Youn-jae", "2007/02/17", "\uace8\ud1b5\uacf5\ud558\uad6c", "\ud55c\uad6d\uace0\ub4e0\ud574");
     }
 
     function addPlayer(
-        string memory name,
+        string memory koreanName,
+        string memory englishName,
         string memory birthDate,
         string memory position,
         string memory team
     ) private {
-        address playerAddress = address(bytes20(keccak256(abi.encodePacked(name))));
-        PlayerInfo memory newPlayer = PlayerInfo(playerAddress, name, birthDate, position, team, 0);
+        address playerAddress = address(bytes20(keccak256(abi.encodePacked(englishName))));
+        PlayerInfo memory newPlayer = PlayerInfo(playerAddress, koreanName, englishName, birthDate, position, team, 0);
         players.push(newPlayer);
         playersInfo[playerAddress] = newPlayer;
         emit NewPlayerAdded(playerAddress);
@@ -115,11 +133,6 @@ contract MyERC20 is
         return players.length;
     }
 
-    function getPlayerByIndex(uint256 index) public view returns (address) {
-        require(index < players.length, "Invalid player index");
-        return address(bytes20(keccak256(abi.encodePacked(players[index].name))));
-    }
-
     function getAllPlayers() public view returns (PlayerInfo[] memory) {
         return players;
     }
@@ -131,15 +144,17 @@ contract MyERC20 is
     function getMyDonationPlayers() public view returns (DonationInfo[] memory) {
         DonationInfo[] memory myDonations = donorToDonations[msg.sender];
         for (uint256 i = 0; i < myDonations.length; i++) {
-            myDonations[i].playerName = playersInfo[myDonations[i].player].name;
+            address playerAddress = myDonations[i].player;
+            myDonations[i].playerName = playersInfo[playerAddress].koreanName;
+            myDonations[i].playerKoreanName = playersInfo[playerAddress].koreanName;
         }
         return myDonations;
     }
 
 
-    function getPlayerInfo(address player) public view returns (string memory, string memory, string memory, string memory, uint256) {
+    function getPlayerInfo(address player) public view returns (string memory, string memory, string memory, string memory, string memory, uint256) {
         PlayerInfo memory playerInfo = playersInfo[player];
-        return (playerInfo.name, playerInfo.birthDate, playerInfo.position, playerInfo.team, playerInfo.totalDonationAmount);
+        return (playerInfo.koreanName, playerInfo.englishName, playerInfo.birthDate, playerInfo.position, playerInfo.team, playerInfo.totalDonationAmount);
     }
 
     function _beforeTokenTransfer(
