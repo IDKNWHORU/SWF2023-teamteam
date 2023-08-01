@@ -46,7 +46,7 @@ const ButtonWrapper = styled.div`
 
   ul {
     display: flex;
-    gap: 15px;
+    gap: 45px;
   }
 
   ul h2 {
