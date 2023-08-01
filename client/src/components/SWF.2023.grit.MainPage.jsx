@@ -13,30 +13,38 @@ const GNBWrapper = styled.div`
 `;
 
 const PlayerWrapper = styled.div`
-  .playlist-label {
-    color: #fff;
-  }
+    .playlist-wrapper{
+        padding: 100px;
+    }
 
-  .nav-back {
-    color: #fff;
-  }
+    .playlist-label {
+        color: #fff;
+    }
 
-  .player-name {
-    color: #fff;
-  }
+    .nav-back {
+        color: #fff;
+    }
 
-  .label-name  {
-    color: #fff;
-  }
+    .player-name {
+        color: #fff;
+    }
 
-  .content-name  {
-    color: #fff;
-  }
+    .label-name  {
+        color: #fff;
+    }
 
-  .donate-label {
-    margin-top: 40px;
-    color: #fff;
-  }
+    .content-name  {
+        color: #fff;
+    }
+
+    .donate-label {
+        margin-top: 40px;
+        color: #fff;
+    }
+
+    .detail-player-wrapper {
+        padding: 60px;
+    }
 `;
 
 const ButtonWrapper = styled.div`
@@ -46,6 +54,8 @@ const ButtonWrapper = styled.div`
 
   ul {
     display: flex;
+    height: 100%;
+    align-items: center;
     gap: 45px;
   }
 
@@ -66,39 +76,48 @@ State.init({
 });
 
 const LeagueWrapper = styled.div`
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
   
-  .league-title {
-    font-size: 24px;
-    color: #999;
-    margin-left: 40px;
-  }
+    .banner-wrapper{
+        padding: 0 225px;
+    }
 
-  .league-holder-label {
-    font-size: 24px;
-    color: #999;
-    margin-left: 40px;
-  }
+    .league-title {
+        font-size: 24px;
+        color: #999;
+        margin-left: 40px;
+        margin-top: 40px;
+    }
 
-  .league-holders {
-    font-size: 24px;
-    color: #fff;
-  }
+    .league-holder-label {
+        font-size: 24px;
+        color: #999;
+        margin-left: 40px;
+    }
 
-  .league-date {
-    font-size: 24px;
-    color: #999;
-    margin-left: 40px;
-  }
+    .league-holders {
+        font-size: 24px;
+        color: #fff;
+    }
 
-  hr {
-    border-top: 1px solid #fff;
-    opacity: 1;
-  }
+    .league-date {
+        font-size: 24px;
+        color: #999;
+        margin-left: 40px;
+    }
+
+    hr {
+        border-top: 1px solid #fff;
+        opacity: 1;
+    }
 `;
 
 const MyPageWrapper = styled.div`
+    .my-page-wrapper {
+        padding: 55px;
+    }
+
     .my-page-title {
       color: #fff;
     }
@@ -133,8 +152,6 @@ if (Ethers.provider()) {
       }
     });
 }
-
-console.log(state);
 
 return (
   <>
