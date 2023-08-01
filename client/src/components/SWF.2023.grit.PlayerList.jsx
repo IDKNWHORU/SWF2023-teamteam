@@ -220,6 +220,7 @@ const SelectableButton = styled.button`
   border-radius: 30px;
   background-color: #39324D;
   color: #fff;
+  margin-left: 15px;
 
   ${({ mode }) => {
     return mode === state.mode
