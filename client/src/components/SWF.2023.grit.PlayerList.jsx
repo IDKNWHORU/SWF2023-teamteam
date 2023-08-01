@@ -1,7 +1,6 @@
-const cronosContractAddress = "0xC6A3f8A89136fede4BD4CA36a1864bDA811937c9";
-
 State.init({
   mode: 0,
+  page: 0,
 });
 
 const images = [
@@ -14,6 +13,8 @@ const images = [
   "https://ipfs.near.social/ipfs/bafkreicl2wdomm22rlz2h3gt62uilbharqgh4gmfbx7j7mbnbrkkfxq564",
   "https://ipfs.near.social/ipfs/bafkreiew5g7eizlh6ms7al5y23g7juioejle2bhv3cbyqoq55upxt2dlyu",
 ];
+
+const cronosContractAddress = "0xBBF09A10B1B8f1825cAdB58d34E0672A9Ee69c2d";
 
 const cronosContractABI = [
   {
@@ -36,6 +37,7 @@ const cronosContractABI = [
             name: "totalDonationAmount",
             internalType: "uint256",
           },
+          { type: "string", name: "photoUrl", internalType: "string" },
         ],
       },
     ],
@@ -48,7 +50,7 @@ const getAllPlayers = () => {
   const cronosContract = new ethers.Contract(
     cronosContractAddress,
     cronosContractABI,
-    Ethers.provider().getSigner()
+    Ethers.provider()
   );
 
   cronosContract.getAllPlayers().then((players) => {
@@ -57,6 +59,9 @@ const getAllPlayers = () => {
 };
 
 if (Ethers.provider()) {
+  if (state.players === undefined) {
+    getAllPlayers();
+  }
   const signer = Ethers.provider().getSigner();
   signer
     .getAddress()
@@ -67,12 +72,6 @@ if (Ethers.provider()) {
       console.log({ err });
     });
 }
-
-if (state.players === undefined) {
-  getAllPlayers();
-}
-
-console.log(state.players);
 
 const Card = styled.div`
     color: #fff;
@@ -97,6 +96,12 @@ const Card = styled.div`
     .card-wrapper {
       position: relative;
       display: inline-block; 
+      width: 100%;
+    }
+
+    .card-wrapper img {
+      width: 100%;
+      height: 100%;
     }
 
     .player-info {
@@ -131,7 +136,7 @@ const PersonalWrapper = styled.div`
   align-items: center;
 
   h2 {
-    width: 40px;
+    width: 50px;
     height: 20px;
     display: flex;
     justify-content: center;
@@ -154,19 +159,33 @@ const PersonalWrapper = styled.div`
 const Cards = () => {
   if (state.players !== undefined) {
     return (
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
+      <div className="card-list-wrapper">
         {state.players.map((player, idx) => {
           if (idx > 7) {
             return null;
           }
           return (
-            <Card>
+            <Card
+              onClick={() => {
+                State.update({ page: 2 });
+                State.update({
+                  player: {
+                    name: player[1],
+                    address: player[0],
+                    team: player[5],
+                    position: player[4],
+                    birthDate: player[3],
+                    photoUrl: player[7],
+                  },
+                });
+              }}
+            >
               <div className="card-wrapper">
-                <img src={images[idx]} width={"100%"}></img>
+                <img src={player[7]}></img>
                 <div className="player-info">
                   <h1>{player[1]}</h1>
                   <BSNWrapper>
-                    <h2>{ethers.utils.formatEther(player[6])} CRO</h2>
+                    <h2>10 CRO</h2>
                     <h3>{player[5]}</h3>
                   </BSNWrapper>
                   <PersonalWrapper>
@@ -185,7 +204,12 @@ const Cards = () => {
 
 const PlayListWrapper = styled.div`
   .playlist-label {
-    color: #fff;
+    margin-bottom: 40px;
+  }
+  .card-list-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 40px;
   }
 `;
 
@@ -208,41 +232,106 @@ const SelectableButton = styled.button`
   }}
 `;
 
+const DetailPageWrapper = styled.div`
+    hr {
+        border-color: #fff;
+        opacity: 1
+    }
+
+    .plan-content-wrapper {
+        color: #000;
+    }
+
+    .nav-back {
+      padding: 15px;
+      font-size: 24px;
+      margin-bottom: 40px;
+      cursor: pointer;
+    }
+
+    .detail-card-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+    `;
+
 return (
-  <PlayListWrapper>
-    <h1 className="playlist-label">가장 핫한 선수</h1>
-    <SelectableButton
-      mode={0}
-      onClick={(_) => {
-        State.update({ mode: 0 });
-      }}
-    >
-      전체보기
-    </SelectableButton>
-    <SelectableButton
-      mode={1}
-      onClick={(_) => {
-        State.update({ mode: 1 });
-      }}
-    >
-      공격수
-    </SelectableButton>
-    <SelectableButton
-      mode={2}
-      onClick={(_) => {
-        State.update({ mode: 2 });
-      }}
-    >
-      수비수
-    </SelectableButton>
-    <SelectableButton
-      mode={3}
-      onClick={(_) => {
-        State.update({ mode: 3 });
-      }}
-    >
-      골키퍼
-    </SelectableButton>
-    <Cards />
-  </PlayListWrapper>
+  <>
+    {state.page === 0 ? (
+      <PlayListWrapper>
+        <h1 className="playlist-label">모두가 핫한 선수</h1>
+        <SelectableButton
+          mode={0}
+          onClick={(_) => {
+            State.update({ mode: 0 });
+          }}
+        >
+          전체보기
+        </SelectableButton>
+        <SelectableButton
+          mode={1}
+          onClick={(_) => {
+            State.update({ mode: 1 });
+          }}
+        >
+          공격수
+        </SelectableButton>
+        <SelectableButton
+          mode={2}
+          onClick={(_) => {
+            State.update({ mode: 2 });
+          }}
+        >
+          수비수
+        </SelectableButton>
+        <SelectableButton
+          mode={3}
+          onClick={(_) => {
+            State.update({ mode: 3 });
+          }}
+        >
+          골키퍼
+        </SelectableButton>
+        <Cards />
+      </PlayListWrapper>
+    ) : (
+      <DetailPageWrapper>
+        <h1
+          className="nav-back"
+          onClick={() => {
+            State.update({ page: 0 });
+          }}
+        >
+          돌아가기
+        </h1>
+        <div className="detail-card-wrapper">
+          <Card>
+            <div className="card-wrapper">
+              <img src={state.player.photoUrl}></img>
+              <div className="player-info">
+                <h1>{state.player.name}</h1>
+                <BSNWrapper>
+                  <h2>10 CRO</h2>
+                  <h3>{state.player.team}</h3>
+                </BSNWrapper>
+                <PersonalWrapper>
+                  <h2>{state.player.position}</h2>
+                  <h3>{state.player.birthDate}</h3>
+                </PersonalWrapper>
+              </div>
+            </div>
+          </Card>
+        </div>
+        <Widget
+          src={`idknwhoru.near/widget/SWF.2023.grit.Player`}
+          props={{ player: state.player }}
+        />
+        <Widget
+          src={`idknwhoru.near/widget/SWF.2023.grit.Donate`}
+          props={{ player: state.player }}
+        />
+      </DetailPageWrapper>
+    )}
+  </>
 );

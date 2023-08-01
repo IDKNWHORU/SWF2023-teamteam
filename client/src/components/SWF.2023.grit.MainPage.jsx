@@ -8,6 +8,33 @@ const GNBWrapper = styled.div`
   display: flex;
 `;
 
+const PlayerWrapper = styled.div`
+  .playlist-label {
+    color: #fff;
+  }
+
+  .nav-back {
+    color: #fff;
+  }
+
+  .player-name {
+    color: #fff;
+  }
+
+  .label-name  {
+    color: #fff;
+  }
+
+  .content-name  {
+    color: #fff;
+  }
+
+  .donate-label {
+    margin-top: 40px;
+    color: #fff;
+  }
+`;
+
 const ButtonWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -15,6 +42,11 @@ const ButtonWrapper = styled.div`
 
   ul {
     display: flex;
+    gap: 15px;
+  }
+
+  ul h2 {
+    cursor: pointer;
   }
 
   .btn-outline-secondary {
@@ -26,27 +58,67 @@ const ButtonWrapper = styled.div`
 `;
 
 State.init({
-  mode: 1,
+  mode: 0,
 });
 
-const DetailPageWrapper = styled.div`
+const LeagueWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  
+  .league-title {
+    font-size: 24px;
+    color: #999;
+    margin-left: 40px;
+  }
+
+  .league-holder-label {
+    font-size: 24px;
+    color: #999;
+    margin-left: 40px;
+  }
+
+  .league-holders {
+    font-size: 24px;
     color: #fff;
+  }
 
-    hr {
+  .league-date {
+    font-size: 24px;
+    color: #999;
+    margin-left: 40px;
+  }
+
+  hr {
+    border-top: 1px solid #fff;
+    opacity: 1;
+  }
+`;
+
+const MyPageWrapper = styled.div`
+    .my-page-title {
+      color: #fff;
+    }
+
+    .my-page-sub-title {
+      color: #fff;
+    }
+
+    .league-nav-button {
         border-color: #fff;
-        opacity: 1
+        background-color: #fff;
+        color: blue;
     }
-
-    .plan-content-wrapper {
-        color: #000;
-    }
-    `;
+`;
 
 return (
   <>
     <ThemeWrapper>
       <GNBWrapper>
-        <h1>KGRIT</h1>
+        <h1>
+          <img
+            src={`https://ipfs.near.social/ipfs/bafkreifjjw45zgdvxlawo5g4qfcvd6ba7gqifbz7xsbqnvtflhrbcgkpq4`}
+          />
+        </h1>
         <ButtonWrapper>
           <ul>
             <h2
@@ -61,31 +133,37 @@ return (
                 State.update({ mode: 1 });
               }}
             >
-              AI NFT
+              원오원 리그
             </h2>
           </ul>
-          <Web3Connect
-            connectLabel="Connect To Wallet"
-            disconnectLabel="DisConnect Wallet"
-          />
+          <ul>
+            <h2
+              onClick={() => {
+                State.update({ mode: 2 });
+              }}
+            >
+              마이페이지
+            </h2>
+            <Web3Connect
+              connectLabel="Connect To Wallet"
+              disconnectLabel="DisConnect Wallet"
+            />
+          </ul>
         </ButtonWrapper>
       </GNBWrapper>
       {state.mode === 0 ? (
-        <Widget src={`idknwhoru.near/widget/SWF.2023.grit.PlayerList`} />
+        <PlayerWrapper>
+          <Widget src={`idknwhoru.near/widget/SWF.2023.grit.PlayerList`} />
+        </PlayerWrapper>
       ) : state.mode === 1 ? (
-        <>
-          <DetailPageWrapper>
-            <Widget
-              src={`idknwhoru.near/widget/SWF.2023.grit.Player`}
-              props={props}
-            />
-            <Widget
-              src={`idknwhoru.near/widget/SWF.2023.grit.Donate`}
-              props={props}
-            />
-          </DetailPageWrapper>
-        </>
-      ) : null}
+        <LeagueWrapper>
+          <Widget src={`idknwhoru.near/widget/SWF.2023.grit.LeagueBanner`} />
+        </LeagueWrapper>
+      ) : (
+        <MyPageWrapper>
+          <Widget src={`idknwhoru.near/widget/SWF.2023.grit.MyPage`} />
+        </MyPageWrapper>
+      )}
     </ThemeWrapper>
   </>
 );

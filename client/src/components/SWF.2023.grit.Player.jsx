@@ -1,6 +1,9 @@
-const player = props.player;
+const player = props.player ?? {
+  name: "김유철",
+  address: "0xFB6c8D00598B394798B2bbf3b66adCa608D5e08C",
+};
 
-const cronosContractAddress = "0xC6A3f8A89136fede4BD4CA36a1864bDA811937c9";
+const cronosContractAddress = "0xBBF09A10B1B8f1825cAdB58d34E0672A9Ee69c2d";
 
 const cronosContractABI = [
   {
@@ -13,6 +16,7 @@ const cronosContractABI = [
       { type: "string", name: "", internalType: "string" },
       { type: "string", name: "", internalType: "string" },
       { type: "uint256", name: "", internalType: "uint256" },
+      { type: "string", name: "", internalType: "string" },
     ],
     name: "getPlayerInfo",
     inputs: [{ type: "address", name: "player", internalType: "address" }],
@@ -33,7 +37,6 @@ const getPlayerInfo = (_) => {
   );
 
   cronosContract.getPlayerInfo(player.address).then((player) => {
-    console.log(player);
     State.update({ player });
   });
 };
@@ -81,20 +84,20 @@ return (
   <>
     {state.player !== undefined ? (
       <PlayerWrapper>
-        <h1>
+        <h1 className="player-name">
           {state.player[0]} {state.player[1]}
         </h1>
         <hr />
         <PlayerInfoWrapper>
           <div className="label-wrapper">
-            <p>포지션</p>
-            <p>소속팀</p>
-            <p>생년월일</p>
+            <p className="label-name">포지션</p>
+            <p className="label-name">소속팀</p>
+            <p className="label-name">생년월일</p>
           </div>
           <div className="content-wrapper">
-            <p>{state.player[3]}</p>
-            <p>{state.player[4]}</p>
-            <p>{state.player[2]}</p>
+            <p className="content-name">{state.player[3]}</p>
+            <p className="content-name">{state.player[4]}</p>
+            <p className="content-name">{state.player[2]}</p>
           </div>
         </PlayerInfoWrapper>
       </PlayerWrapper>

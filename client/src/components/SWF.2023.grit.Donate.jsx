@@ -1,7 +1,7 @@
 const player = props.player;
-const list = [1500, 1000, 100];
+const list = [30, 20, 10];
 
-const cronosContractAddress = "0xC6A3f8A89136fede4BD4CA36a1864bDA811937c9";
+const cronosContractAddress = "0xBBF09A10B1B8f1825cAdB58d34E0672A9Ee69c2d";
 
 const cronosContractABI = [
   {
@@ -45,13 +45,29 @@ if (Ethers.provider()) {
     });
 }
 
+const DonateWrapper = styled.div`
+  .donate-label {
+    margin-left: 40px;
+  }
+`;
+
+const PlanCardWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+`;
+
 const PlanCard = styled.div`
-    width: 150px;
+    width: 30%;
     height: 200px;
     border: solid 1px #bbb;
     cursor: pointer;
     background-color: ${(cardProps) =>
       cardProps.price === state.price ? "#E5EDFE" : "#fff"};
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
     .radio-button {
       width: 20px;
@@ -75,22 +91,26 @@ const PlanCard = styled.div`
     }
 
     .plan-content-wrapper h1{
+      margin-top: 15px;
       font-size: 12px;
+      text-align: center;
     }
 
     .plan-content-wrapper h2{
       font-size: 24px;
+      text-align: center;
     }
 
     .plan-content-wrapper h3{
       font-size: 12px;
+      text-align: center;
     }
 `;
 
 const Cards = () => {
   if (player !== undefined) {
     return (
-      <div style={{ display: "flex" }}>
+      <PlanCardWrapper>
         {list.map((price, idx) => (
           <PlanCard
             price={price}
@@ -108,7 +128,7 @@ const Cards = () => {
             </div>
           </PlanCard>
         ))}
-      </div>
+      </PlanCardWrapper>
     );
   }
 };
@@ -123,9 +143,10 @@ const DonateButton = styled.button`
 `;
 
 return (
-  <>
-    <h1>투자 금액</h1>
+  <DonateWrapper>
+    <h1 className="donate-label">투자 금액</h1>
+    <hr />
     <Cards />
     <DonateButton onClick={donate}>투자하기</DonateButton>
-  </>
+  </DonateWrapper>
 );
