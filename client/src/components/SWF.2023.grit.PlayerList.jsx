@@ -3,17 +3,6 @@ State.init({
   page: 0,
 });
 
-const images = [
-  "https://ipfs.near.social/ipfs/bafkreifdek56fab4d55vun6to66dzizhy76ly65gdy3eo6lv5vnzbxgrty",
-  "https://ipfs.near.social/ipfs/bafkreibslifqs6pz37vy2mrrlmogtatlg5s2d5fc4bfiv4rzcgzubgekeu",
-  "https://ipfs.near.social/ipfs/bafkreibshwzbeoxguy5mot6nilssix3ilmpt6w5xv6bazvt2edbnaa5spe",
-  "https://ipfs.near.social/ipfs/bafkreic5tco2sgvxdacogftgk3rlsjohb3ptqomr4o5vwtkrzvlfajnl7y",
-  "https://ipfs.near.social/ipfs/bafkreigpfirgs42t4rfbbixixm4w5ukqxsbflvvn2nxl7zdktalncxqh2a",
-  "https://ipfs.near.social/ipfs/bafkreias744aadzv7ivxuyoqtzwbbd6lawph5hewidapwwgyj5rnt73iri",
-  "https://ipfs.near.social/ipfs/bafkreicl2wdomm22rlz2h3gt62uilbharqgh4gmfbx7j7mbnbrkkfxq564",
-  "https://ipfs.near.social/ipfs/bafkreiew5g7eizlh6ms7al5y23g7juioejle2bhv3cbyqoq55upxt2dlyu",
-];
-
 const cronosContractAddress = "0xBBF09A10B1B8f1825cAdB58d34E0672A9Ee69c2d";
 
 const cronosContractABI = [
@@ -158,9 +147,19 @@ const PersonalWrapper = styled.div`
 
 const Cards = () => {
   if (state.players !== undefined) {
+    const players =
+      state.mode === 0
+        ? state.players
+        : state.mode === 1
+        ? state.players.filter((player) => player[4] === "공격수")
+        : state.mode === 2
+        ? state.players.filter((player) => player[4] === "수비수")
+        : state.mode === 3
+        ? state.players.filter((player) => player[4] === "골키퍼")
+        : null;
     return (
       <div className="card-list-wrapper">
-        {state.players.map((player, idx) => {
+        {players.map((player, idx) => {
           if (idx > 7) {
             return null;
           }
