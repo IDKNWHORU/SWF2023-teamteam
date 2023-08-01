@@ -25,8 +25,11 @@ contract MyERC20 is
         address player;
         string playerName;
         string playerKoreanName;
+        string position;
         uint256 amount;
         address donor;
+        bool isPlaying;
+        string photoUrl;
     }
 
     struct PlayerInfo {
@@ -37,6 +40,7 @@ contract MyERC20 is
         string position;
         string team;
         uint256 totalDonationAmount;
+        string photoUrl;
     }
 
     mapping(address => PlayerInfo) private playersInfo;
@@ -49,26 +53,26 @@ contract MyERC20 is
     event NewPlayerAdded(address player);
 
     constructor(string memory name, string memory symbol) ERC20(name, symbol) {
-        addPlayer("\uae40\uc720\uccb4", "Kim Yoochul", "2007/01/22", "\uace8\ud1b5\uacf5\ud558\uad6c", "\uc11c\uc6b8\uace0\ub4e0\ud574");
-        addPlayer("\ubc15\ud604\uc870", "Park Hyun-Jun", "2008/11/18", "\ubbf8\ub4dd\ud540", "\ud55c\uad6d\uc911\ud559\uad50");
-        addPlayer("\uc774\uac10\uc778", "Lee Gam-in", "2007/07/02", "\ubbf8\ub4dd\ud540", "\ud0dc\uadf9\uace0\ub4e0\ud574");
-        addPlayer("\uc18c\uc720\ucba85", "Son Heung-min", "2009/09/13", "\uacf5\uac1c\uc218", "\ub300\ud55c\uc911\ud559\uad50");
-        addPlayer("\ubc15\uc9c1\uc11d", "Park Ji-seok", "2008/08/07", "\ubbf8\ub4dd\ud540", "\uc11c\uc6b8\uace0\ub4e0\ud574");
-        addPlayer("\ud654\ud76c\ucc3d", "Hwang Hwue-chan", "2007/07/12", "\uacf5\uac1c\uc218", "\ud55c\uad6d\uace0\ub4e0\ud574");
-        addPlayer("\uae40\uc778\uc7ac", "Kim In-jae", "2007/04/06", "\uc218\ube44\uc218", "\uc11c\uc6b8\uace0\ub4e0\ud574");
-        addPlayer("\ud64d\uae40\uad00", "Hong Myoung-mo", "2008/03/19", "\uc218\ube44\uc218", "\ud0dc\uadf9\uace0\ub4e0\ud574");
-        addPlayer("\uc778\uc815\ud658", "In Jung-hwan", "2007/08/04", "\uacf5\uac1c\uc218", "\uc11c\uc6b8\uace0\ub4e0\ud574");
-        addPlayer("\uc774\uccad\uc218", "Lee Chung-soo", "2007/05/25", "\ubbf8\ub4dd\ud540", "\ud55c\uad6d\uace0\ub4e0\ud574");
-        addPlayer("\uc870\ud658\ubb38", "Jo Hyun-mu", "2007/06/16", "\uace8\ubd81\uc218", "\ud0dc\uadf9\uace0\ub4e0\ud574");
-        addPlayer("\uae30\uc131\uc6d0", "Ki Seon-young", "2009/10/10", "\ubbf8\ub4dd\ud540", "\ud55c\ubbfc\uc911\ud559\uad50");
-        addPlayer("\uad50\ucc28\uc9c4", "Koo Cha-Jeol", "2010/11/01", "\ubbf8\ub4dd\ud540", "\ub300\ud55c\uc911\ud559\uad50");
-        addPlayer("\uc774\ucc9c\uc6d0", "Lee Chun-young", "2009/02/12", "\ubbf8\ub4dd\ud540", "\ud55c\uad6d\uc911\ud559\uad50");
-        addPlayer("\ubc15\uc8fc\uc5f0", "Park Ju-Yeok", "2007/03/30", "\uacf5\uac1c\uc218", "\uc11c\uc6b8\uace0\ub4e0\ud574");
-        addPlayer("\uae40\uc9c4\ub450", "Kim Jin-du", "2008/04/18", "\uc218\ube44\uc218", "\ud0dc\uadf9\uace0\ub4e0\ud574");
-        addPlayer("\ud658\ubbfc\ubca0", "Hwang Min-bum", "2009/12/11", "\ubbf8\ub4dd\ud540", "\ud55c\ubbfc\uc911\ud559\uad50");
-        addPlayer("\uc870\uad6c\uc815", "Jo Kyu-jung", "2007/12/05", "\uacf5\uac1c\uc218", "\ud0dc\uadf9\uace0\ub4e0\ud574");
-        addPlayer("\uc774\uc7ac\uc120", "Lee Jae-seon", "2008/12/29", "\ubbf8\ub4dd\ud540", "\uc11c\uc6b8\uace0\ub4e0\ud574");
-        addPlayer("\uc774\uc720\uc7ac", "Lee Youn-jae", "2007/02/17", "\uace8\ud1b5\uacf5\ud558\uad6c", "\ud55c\uad6d\uace0\ub4e0\ud574");
+        addPlayer("\uAE40\uC720\uCCA0", "Kim Yoochul", "2007/01/22", "\uACE8\uD0A4\uD37C", "\uC11C\uC6B8\uACE0\uB4F1\uD559\uAD50", "https://ipfs.near.social/ipfs/bafkreifdek56fab4d55vun6to66dzizhy76ly65gdy3eo6lv5vnzbxgrty");
+        addPlayer("\uBC15\uD604\uC900", "Park Hyun-Jun", "2008/11/18", "\uBBF8\uB4DC\uD544\uB354", "\ud55c\uad6d\uc911\ud559\uad50", "https://ipfs.near.social/ipfs/bafkreibslifqs6pz37vy2mrrlmogtatlg5s2d5fc4bfiv4rzcgzubgekeu");
+        addPlayer("\uC774\uAC10\uC778", "Lee Gam-in", "2007/07/02", "\uBBF8\uB4DC\uD544\uB354", "\uD0DC\uADF9\uACE0\uB4F1\uD559\uAD50", "https://ipfs.near.social/ipfs/bafkreibshwzbeoxguy5mot6nilssix3ilmpt6w5xv6bazvt2edbnaa5spe");
+        addPlayer("\uC190\uC751\uBBFC", "Son Heung-min", "2009/09/13", "\uACF5\uACA9\uC218", "\ub300\ud55c\uc911\ud559\uad50", "https://ipfs.near.social/ipfs/bafkreic5tco2sgvxdacogftgk3rlsjohb3ptqomr4o5vwtkrzvlfajnl7y");
+        addPlayer("\uBC15\uC9C0\uC11D", "Park Ji-seok", "2008/08/07", "\uBBF8\uB4DC\uD544\uB354", "\uC11C\uC6B8\uACE0\uB4F1\uD559\uAD50", "https://ipfs.near.social/ipfs/bafkreigpfirgs42t4rfbbixixm4w5ukqxsbflvvn2nxl7zdktalncxqh2a");
+        addPlayer("\uD669\uD718\uCC2C", "Hwang Hwue-chan", "2007/07/12", "\uACF5\uACA9\uC218", "\uD55C\uAD6D\uACE0\uB4F1\uD559\uAD50", "https://ipfs.near.social/ipfs/bafkreias744aadzv7ivxuyoqtzwbbd6lawph5hewidapwwgyj5rnt73iri");
+        addPlayer("\uAE40\uC778\uC7AC", "Kim In-jae", "2007/04/06", "\uc218\ube44\uc218", "\uC11C\uC6B8\uACE0\uB4F1\uD559\uAD50", "https://ipfs.near.social/ipfs/bafkreicl2wdomm22rlz2h3gt62uilbharqgh4gmfbx7j7mbnbrkkfxq564");
+        addPlayer("\uD64D\uBA85\uBAA8", "Hong Myoung-mo", "2008/03/19", "\uc218\ube44\uc218", "\uD0DC\uADF9\uACE0\uB4F1\uD559\uAD50", "https://ipfs.near.social/ipfs/bafkreiew5g7eizlh6ms7al5y23g7juioejle2bhv3cbyqoq55upxt2dlyu");
+        addPlayer("\uC778\uC815\uD658", "In Jung-hwan", "2007/08/04", "\uACF5\uACA9\uC218", "\uC11C\uC6B8\uACE0\uB4F1\uD559\uAD50", "https://ipfs.near.social/ipfs/bafkreifdek56fab4d55vun6to66dzizhy76ly65gdy3eo6lv5vnzbxgrty");
+        addPlayer("\uC774\uCCAD\uC218", "Lee Chung-soo", "2007/05/25", "\uBBF8\uB4DC\uD544\uB354", "\uD55C\uAD6D\uACE0\uB4F1\uD559\uAD50", "https://ipfs.near.social/ipfs/bafkreibslifqs6pz37vy2mrrlmogtatlg5s2d5fc4bfiv4rzcgzubgekeu");
+        addPlayer("\uC870\uD604\uBB34", "Jo Hyun-mu", "2007/06/16", "\uace8\ubd81\uc218", "\uD0DC\uADF9\uACE0\uB4F1\uD559\uAD50", "https://ipfs.near.social/ipfs/bafkreibshwzbeoxguy5mot6nilssix3ilmpt6w5xv6bazvt2edbnaa5spe");
+        addPlayer("\uAE30\uC120\uC6A9", "Ki Seon-young", "2009/10/10", "\uBBF8\uB4DC\uD544\uB354", "\ud55c\ubbfc\uc911\ud559\uad50", "https://ipfs.near.social/ipfs/bafkreic5tco2sgvxdacogftgk3rlsjohb3ptqomr4o5vwtkrzvlfajnl7y");
+        addPlayer("\uAD6C\uCC28\uC808", "Koo Cha-Jeol", "2010/11/01", "\uBBF8\uB4DC\uD544\uB354", "\ub300\ud55c\uc911\ud559\uad50", "https://ipfs.near.social/ipfs/bafkreigpfirgs42t4rfbbixixm4w5ukqxsbflvvn2nxl7zdktalncxqh2a");
+        addPlayer("\uC774\uCC9C\uC6A9", "Lee Chun-young", "2009/02/12", "\uBBF8\uB4DC\uD544\uB354", "\ud55c\uad6d\uc911\ud559\uad50", "https://ipfs.near.social/ipfs/bafkreias744aadzv7ivxuyoqtzwbbd6lawph5hewidapwwgyj5rnt73iri");
+        addPlayer("\uBC15\uC8FC\uC5ED", "Park Ju-Yeok", "2007/03/30", "\uACF5\uACA9\uC218", "\uC11C\uC6B8\uACE0\uB4F1\uD559\uAD50", "https://ipfs.near.social/ipfs/bafkreicl2wdomm22rlz2h3gt62uilbharqgh4gmfbx7j7mbnbrkkfxq564");
+        addPlayer("\uAE40\uC9C4\uB450", "Kim Jin-du", "2008/04/18", "\uc218\ube44\uc218", "\uD0DC\uADF9\uACE0\uB4F1\uD559\uAD50", "https://ipfs.near.social/ipfs/bafkreiew5g7eizlh6ms7al5y23g7juioejle2bhv3cbyqoq55upxt2dlyu");
+        addPlayer("\uD669\uBBFC\uBC94", "Hwang Min-bum", "2009/12/11", "\uBBF8\uB4DC\uD544\uB354", "\ud55c\ubbfc\uc911\ud559\uad50", "https://ipfs.near.social/ipfs/bafkreifdek56fab4d55vun6to66dzizhy76ly65gdy3eo6lv5vnzbxgrty");
+        addPlayer("\uC870\uADDC\uC815", "Jo Kyu-jung", "2007/12/05", "\uACF5\uACA9\uC218", "\uD0DC\uADF9\uACE0\uB4F1\uD559\uAD50", "https://ipfs.near.social/ipfs/bafkreibslifqs6pz37vy2mrrlmogtatlg5s2d5fc4bfiv4rzcgzubgekeu");
+        addPlayer("\uC774\uC7AC\uC120", "Lee Jae-seon", "2008/12/29", "\uBBF8\uB4DC\uD544\uB354", "\uC11C\uC6B8\uACE0\uB4F1\uD559\uAD50", "https://ipfs.near.social/ipfs/bafkreibshwzbeoxguy5mot6nilssix3ilmpt6w5xv6bazvt2edbnaa5spe");
+        addPlayer("\uC774\uC724\uC7AC", "Lee Youn-jae", "2007/02/17", "\uACE8\uD0A4\uD37C", "\uD55C\uAD6D\uACE0\uB4F1\uD559\uAD50", "https://ipfs.near.social/ipfs/bafkreic5tco2sgvxdacogftgk3rlsjohb3ptqomr4o5vwtkrzvlfajnl7y");
     }
 
     function addPlayer(
@@ -76,10 +80,11 @@ contract MyERC20 is
         string memory englishName,
         string memory birthDate,
         string memory position,
-        string memory team
+        string memory team,
+        string memory photoUrl
     ) private {
         address playerAddress = address(bytes20(keccak256(abi.encodePacked(englishName))));
-        PlayerInfo memory newPlayer = PlayerInfo(playerAddress, koreanName, englishName, birthDate, position, team, 0);
+        PlayerInfo memory newPlayer = PlayerInfo(playerAddress, koreanName, englishName, birthDate, position, team, 0, photoUrl);
         players.push(newPlayer);
         playersInfo[playerAddress] = newPlayer;
         emit NewPlayerAdded(playerAddress);
@@ -92,6 +97,7 @@ contract MyERC20 is
         newDonation.player = player;
         newDonation.amount = msg.value;
         newDonation.donor = msg.sender;
+        newDonation.isPlaying = false;
 
         donations.push(newDonation);
 
@@ -143,18 +149,28 @@ contract MyERC20 is
 
     function getMyDonationPlayers() public view returns (DonationInfo[] memory) {
         DonationInfo[] memory myDonations = donorToDonations[msg.sender];
+        DonationInfo[] memory myDonationDetails = new DonationInfo[](myDonations.length);
+
         for (uint256 i = 0; i < myDonations.length; i++) {
-            address playerAddress = myDonations[i].player;
-            myDonations[i].playerName = playersInfo[playerAddress].koreanName;
-            myDonations[i].playerKoreanName = playersInfo[playerAddress].koreanName;
+            DonationInfo memory donation = myDonations[i];
+            address playerAddress = donation.player;
+            PlayerInfo memory player = playersInfo[playerAddress];
+
+            myDonationDetails[i].player = playerAddress;
+            myDonationDetails[i].playerName = player.koreanName;
+            myDonationDetails[i].position = player.position;
+            myDonationDetails[i].amount = donation.amount;
+            myDonationDetails[i].donor = donation.donor;
+            myDonationDetails[i].photoUrl = player.photoUrl;
         }
-        return myDonations;
+
+        return myDonationDetails;
     }
 
 
-    function getPlayerInfo(address player) public view returns (string memory, string memory, string memory, string memory, string memory, uint256) {
+    function getPlayerInfo(address player) public view returns (string memory, string memory, string memory, string memory, string memory, uint256, string memory) {
         PlayerInfo memory playerInfo = playersInfo[player];
-        return (playerInfo.koreanName, playerInfo.englishName, playerInfo.birthDate, playerInfo.position, playerInfo.team, playerInfo.totalDonationAmount);
+        return (playerInfo.koreanName, playerInfo.englishName, playerInfo.birthDate, playerInfo.position, playerInfo.team, playerInfo.totalDonationAmount, playerInfo.photoUrl);
     }
 
     function _beforeTokenTransfer(
