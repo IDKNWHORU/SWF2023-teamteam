@@ -1,5 +1,9 @@
 const ThemeWrapper = styled.div`
     background-color: #202123;
+
+    .wallet-message {
+        color: #fff;
+    }
 `;
 
 const GNBWrapper = styled.div`
@@ -110,6 +114,28 @@ const MyPageWrapper = styled.div`
     }
 `;
 
+if (Ethers.provider()) {
+  const signer = Ethers.provider().getSigner();
+  signer
+    .getAddress()
+    .then((address) => {
+      State.update({ address });
+    })
+    .catch((err) => {
+      console.log({ err });
+    });
+
+  Ethers.provider()
+    .getNetwork()
+    .then((chainIdData) => {
+      if (chainIdData?.chainId) {
+        State.update({ chainId: chainIdData.chainId });
+      }
+    });
+}
+
+console.log(state);
+
 return (
   <>
     <ThemeWrapper>
@@ -151,7 +177,11 @@ return (
           </ul>
         </ButtonWrapper>
       </GNBWrapper>
-      {state.mode === 0 ? (
+      {state.address === undefined ? (
+        <h1 className="wallet-message">지갑을 연결해주세요.</h1>
+      ) : state.chainId !== 338 ? (
+        <h1 className="wallet-message">크로노스 테스트넷으로 연결해주세요.</h1>
+      ) : state.mode === 0 ? (
         <PlayerWrapper>
           <Widget src={`idknwhoru.near/widget/SWF.2023.grit.PlayerList`} />
         </PlayerWrapper>
